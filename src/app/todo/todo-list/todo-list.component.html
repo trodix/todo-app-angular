@@ -3,9 +3,9 @@
     <app-todo-item class="todo-item" [todoItem]="todoItem"></app-todo-item>
   </div>
   <div class="todo-list__input">
-    <form #todoForm="ngForm">
+    <form #todoForm="ngForm" (ngSubmit)="handleAddTodoItem(todoForm)">
       <input type="text" placeholder="Add a new item" required [(ngModel)]="todoModel.title" name="title" autocomplete="off">
-      <button class="btn-primary" type="submit" (click)="handleAddTodoItem()">Add</button>
+      <button class="btn-primary">Add</button>
     </form>
   </div>
 </div>

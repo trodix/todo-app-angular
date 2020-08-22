@@ -10,6 +10,11 @@
     background-color: $primary;
 }
 
+.btn-warning {
+    @extend %btn;
+    background-color: $warning;
+}
+
 .btn-error {
     @extend %btn;
     background-color: $error;

@@ -1,5 +1,12 @@
 <div class="todo-item">
     <input type="checkbox" [checked]="todoItem.done" (change)="handleCompleteStatus()">
-    <p class="todo-item__done" [class]="{ 'todo-item__done': todoItem.done }">{{ todoItem.title }}</p>
-    <button class="btn-error" (click)="handleRemoveItem()">X</button>
+    <p class="todo-item__done" [class]="{ 'todo-item__done': todoItem.done }" *ngIf="!editMode; else showForm">{{ todoItem.title }}</p>
+    <button class="btn-warning" (click)="handleEditItem()" *ngIf="!editMode">Edit</button>
+    <button class="btn-error" (click)="handleRemoveItem()" *ngIf="!editMode">X</button>
+    <ng-template #showForm>
+        <form #todoEditForm="ngForm" (ngSubmit)="handleSaveEditItem(todoEditForm)">
+            <input type="text" [(ngModel)]="todoModel.title" name="title" required autocomplete="off">
+            <button class="btn-primary">Ok</button>
+        </form>
+    </ng-template>
 </div>

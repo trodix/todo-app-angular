@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../store/models/todo-item-state.model';
 import { Observable } from 'rxjs';
 import { LoadTodoItemsAction, SaveTodoItemAction } from '../store/actions/todo-item.actions';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-todo-list',
@@ -32,9 +33,10 @@ export class TodoListComponent implements OnInit {
     this.store.dispatch(new LoadTodoItemsAction());
   }
 
-  handleAddTodoItem(): void {
-    if (this.todoModel.title.length > 0) {
-      this.store.dispatch(new SaveTodoItemAction(this.todoModel));
+  handleAddTodoItem(form: NgForm): void {
+    if (form.valid) {
+      this.store.dispatch(new SaveTodoItemAction({ ...this.todoModel }));
+      form.resetForm();
     }
   }
 
