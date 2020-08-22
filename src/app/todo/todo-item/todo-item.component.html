@@ -1,5 +1,5 @@
 <div class="todo-item">
     <input type="checkbox" [checked]="todoItem.done" (change)="handleCompleteStatus()">
     <p class="todo-item__done" [class]="{ 'todo-item__done': todoItem.done }">{{ todoItem.title }}</p>
-    <button (click)="handleRemoveItem()">Suppr</button>
+    <button class="btn-error" (click)="handleRemoveItem()">X</button>
 </div>

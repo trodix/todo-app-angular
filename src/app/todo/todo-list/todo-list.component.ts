@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { TodoItem } from '../todo-item/todo-item.component';
+import { TodoItem } from '../store/models/todo-item.model';
 import { TodoService } from '../todo.service';
+import { Store } from '@ngrx/store';
+import { AppState } from '../store/models/todo-item-state.model';
+import { Observable } from 'rxjs';
+import { LoadTodoItemsAction } from '../store/actions/todo-item.actions';
 
 @Component({
   selector: 'app-todo-list',
@@ -9,12 +13,18 @@ import { TodoService } from '../todo.service';
 })
 export class TodoListComponent implements OnInit {
 
-  todoItemList: TodoItem[] = [];
+  todoItems$: Observable<TodoItem[]>;
+  loading$: Observable<boolean>;
+  error$: Observable<Error>;
 
-  constructor(private todoService: TodoService) { }
+  constructor(private store: Store<AppState>) { }
 
   ngOnInit(): void {
-    this.todoService.getTodos().subscribe((todoItemList: TodoItem[]) => this.todoItemList = todoItemList);
+    this.todoItems$ = this.store.select(store => store.todo.list);
+    this.loading$ = this.store.select(store => store.todo.loading);
+    this.error$ = this.store.select(store => store.todo.error);
+
+    this.store.dispatch(new LoadTodoItemsAction());
   }
 
 }

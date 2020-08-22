@@ -1,5 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { TodoService } from '../todo.service';
+import { TodoItem } from '../store/models/todo-item.model';
 
 @Component({
   selector: 'app-todo-item',
@@ -24,10 +25,4 @@ export class TodoItemComponent implements OnInit {
     this.todoService.deleteTodoItem(this.todoItem).subscribe();
   }
 
-}
-
-export interface TodoItem {
-  id: string;
-  title: string;
-  done: boolean;
 }
