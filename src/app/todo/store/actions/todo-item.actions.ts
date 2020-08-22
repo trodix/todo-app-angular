@@ -9,6 +9,10 @@ export enum TodoActionTypes {
   UPDATE_TODO_ITEM = '[TODO ITEM] Update Item',
   UPDATE_TODO_ITEM_SUCCESS = '[TODO ITEM] Update Item success',
   UPDATE_TODO_ITEM_FAILURE = '[TODO ITEM] Update Item failure',
+
+  DELETE_TODO_ITEM = '[TODO ITEM] Delete Item',
+  DELETE_TODO_ITEM_SUCCESS = '[TODO ITEM] Delete Item success',
+  DELETE_TODO_ITEM_FAILURE = '[TODO ITEM] Delete Item failure',
 }
 
 export class LoadTodoItemsAction implements Action {
@@ -48,6 +52,25 @@ export class UpdateTodoItemFailureAction implements Action {
   constructor(public payload: Error) {}
 }
 
+export class DeleteTodoItemAction implements Action {
+  readonly type = TodoActionTypes.DELETE_TODO_ITEM;
+  todoItem: TodoItem;
+
+  constructor(public payload: TodoItem) {}
+}
+
+export class DeleteTodoItemSuccessAction implements Action {
+  readonly type = TodoActionTypes.DELETE_TODO_ITEM_SUCCESS;
+
+  constructor(public payload: TodoItem) {}
+}
+
+export class DeleteTodoItemFailureAction implements Action {
+  readonly type = TodoActionTypes.DELETE_TODO_ITEM_FAILURE;
+
+  constructor(public payload: Error) {}
+}
+
 export type TodoAction =
   LoadTodoItemsAction
   | LoadTodoItemsSuccessAction
@@ -55,4 +78,7 @@ export type TodoAction =
   | UpdateTodoItemAction
   | UpdateTodoItemSuccessAction
   | UpdateTodoItemFailureAction
+  | DeleteTodoItemAction
+  | DeleteTodoItemSuccessAction
+  | DeleteTodoItemFailureAction
 ;

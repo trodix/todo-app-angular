@@ -36,6 +36,14 @@ export function TodoReducer(state: TodoState = initialState, action: TodoAction)
     case TodoActionTypes.UPDATE_TODO_ITEM_FAILURE:
       return { ...state, loading: false, error: action.payload };
 
+    case TodoActionTypes.DELETE_TODO_ITEM:
+      return { ...state, loading: true };
+
+    case TodoActionTypes.DELETE_TODO_ITEM_SUCCESS:
+      return { ...state, list: state.list.filter(i => i.id !== action.payload.id), loading: false };
+
+    case TodoActionTypes.DELETE_TODO_ITEM_FAILURE:
+      return { ...state, loading: false, error: action.payload };
 
     default:
       return state;

@@ -3,7 +3,7 @@ import { TodoService } from '../todo.service';
 import { TodoItem } from '../store/models/todo-item.model';
 import { Store } from '@ngrx/store';
 import { AppState } from '../store/models/todo-item-state.model';
-import { UpdateTodoItemAction } from '../store/actions/todo-item.actions';
+import { UpdateTodoItemAction, DeleteTodoItemAction } from '../store/actions/todo-item.actions';
 
 @Component({
   selector: 'app-todo-item',
@@ -27,7 +27,7 @@ export class TodoItemComponent implements OnInit {
   }
 
   handleRemoveItem(): void {
-    // this.todoService.deleteTodoItem(this.todoItem).subscribe();
+    this.store.dispatch(new DeleteTodoItemAction(this.todoItem));
   }
 
 }
