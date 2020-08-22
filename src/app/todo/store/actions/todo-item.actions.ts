@@ -6,6 +6,10 @@ export enum TodoActionTypes {
   LOAD_TODO_ITEMS_SUCCESS = '[TODO ITEM] Load Items success',
   LOAD_TODO_ITEMS_FAILURE = '[TODO ITEM] Load Items failure',
 
+  SAVE_TODO_ITEM = '[TODO ITEM] Save Item',
+  SAVE_TODO_ITEM_SUCCESS = '[TODO ITEM] Save Item success',
+  SAVE_TODO_ITEM_FAILURE = '[TODO ITEM] Save Item failure',
+
   UPDATE_TODO_ITEM = '[TODO ITEM] Update Item',
   UPDATE_TODO_ITEM_SUCCESS = '[TODO ITEM] Update Item success',
   UPDATE_TODO_ITEM_FAILURE = '[TODO ITEM] Update Item failure',
@@ -29,6 +33,25 @@ export class LoadTodoItemsSuccessAction implements Action {
 
 export class LoadTodoItemsFailureAction implements Action {
   readonly type = TodoActionTypes.LOAD_TODO_ITEMS_FAILURE;
+
+  constructor(public payload: Error) {}
+}
+
+export class SaveTodoItemAction implements Action {
+  readonly type = TodoActionTypes.SAVE_TODO_ITEM;
+  todoItem: TodoItem;
+
+  constructor(public payload: TodoItem) {}
+}
+
+export class SaveTodoItemSuccessAction implements Action {
+  readonly type = TodoActionTypes.SAVE_TODO_ITEM_SUCCESS;
+
+  constructor(public payload: TodoItem) {}
+}
+
+export class SaveTodoItemFailureAction implements Action {
+  readonly type = TodoActionTypes.SAVE_TODO_ITEM_FAILURE;
 
   constructor(public payload: Error) {}
 }
@@ -75,6 +98,9 @@ export type TodoAction =
   LoadTodoItemsAction
   | LoadTodoItemsSuccessAction
   | LoadTodoItemsFailureAction
+  | SaveTodoItemAction
+  | SaveTodoItemSuccessAction
+  | SaveTodoItemFailureAction
   | UpdateTodoItemAction
   | UpdateTodoItemSuccessAction
   | UpdateTodoItemFailureAction

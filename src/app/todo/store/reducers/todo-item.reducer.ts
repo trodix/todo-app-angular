@@ -24,6 +24,15 @@ export function TodoReducer(state: TodoState = initialState, action: TodoAction)
     case TodoActionTypes.LOAD_TODO_ITEMS_FAILURE:
       return { ...state, loading: false, error: action.payload };
 
+    case TodoActionTypes.SAVE_TODO_ITEM:
+      return { ...state, loading: true };
+
+    case TodoActionTypes.SAVE_TODO_ITEM_SUCCESS:
+      return { ...state, list: [ ...state.list, action.payload ], loading: false };
+
+    case TodoActionTypes.SAVE_TODO_ITEM_FAILURE:
+      return { ...state, error: action.payload, loading: false };
+
     case TodoActionTypes.UPDATE_TODO_ITEM:
       return { ...state, loading: true };
 

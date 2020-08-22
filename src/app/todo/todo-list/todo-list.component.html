@@ -1,3 +1,12 @@
-<div class="todo-list" *ngFor="let todoItem of todoItems$ | async">
-  <app-todo-item class="todo-item" [todoItem]="todoItem"></app-todo-item>
+<div class="todo-list__wrapper">
+  <div class="todo-list__content" *ngFor="let todoItem of todoItems$ | async">
+    <app-todo-item class="todo-item" [todoItem]="todoItem"></app-todo-item>
+  </div>
+  <div class="todo-list__input">
+    <form #todoForm="ngForm">
+      <input type="text" placeholder="Add a new item" required [(ngModel)]="todoModel.title" name="title" autocomplete="off">
+      <button class="btn-primary" type="submit" (click)="handleAddTodoItem()">Add</button>
+    </form>
+  </div>
 </div>
+

@@ -1,9 +1,25 @@
-.todo-list {
+.todo-list__wrapper {
     width: 400px;
-    display: flex;
-    flex-direction: column;
     margin: auto;
-    .todo-item {
-        margin-top: 10px;
+
+    .todo-list__content {
+        display: flex;
+        flex-direction: column;
+        .todo-item {
+            margin-top: 10px;
+        }
+    }
+
+    .todo-list__input {
+        margin: 10px 0;
+        display: flex;
+        input {
+            font-size: 1em;
+        }
+        button {
+            height: 100%;
+            align-items: flex-end;
+            justify-content: end;
+        }
     }
 }

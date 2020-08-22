@@ -16,6 +16,10 @@ export class TodoService {
     return this.http.get<TodoItem[]>(this.TODO_URL);
   }
 
+  saveTodoItem(todoItem: TodoItem): Observable<TodoItem> {
+    return this.http.post<TodoItem>(this.TODO_URL, todoItem);
+  }
+
   updateTodoItem(todoItem: TodoItem): Observable<TodoItem> {
     return this.http.put<TodoItem>(this.TODO_URL + `/${todoItem.id}`, todoItem);
   }

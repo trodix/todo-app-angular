@@ -4,7 +4,7 @@ import { TodoService } from '../todo.service';
 import { Store } from '@ngrx/store';
 import { AppState } from '../store/models/todo-item-state.model';
 import { Observable } from 'rxjs';
-import { LoadTodoItemsAction } from '../store/actions/todo-item.actions';
+import { LoadTodoItemsAction, SaveTodoItemAction } from '../store/actions/todo-item.actions';
 
 @Component({
   selector: 'app-todo-list',
@@ -17,6 +17,11 @@ export class TodoListComponent implements OnInit {
   loading$: Observable<boolean>;
   error$: Observable<Error>;
 
+  todoModel: TodoItem = {
+    title: '',
+    done: false
+  };
+
   constructor(private store: Store<AppState>) { }
 
   ngOnInit(): void {
@@ -25,6 +30,12 @@ export class TodoListComponent implements OnInit {
     this.error$ = this.store.select(store => store.todo.error);
 
     this.store.dispatch(new LoadTodoItemsAction());
+  }
+
+  handleAddTodoItem(): void {
+    if (this.todoModel.title.length > 0) {
+      this.store.dispatch(new SaveTodoItemAction(this.todoModel));
+    }
   }
 
 }

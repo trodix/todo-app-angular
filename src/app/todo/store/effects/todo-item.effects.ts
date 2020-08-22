@@ -14,6 +14,9 @@ import {
   DeleteTodoItemAction,
   DeleteTodoItemFailureAction,
   DeleteTodoItemSuccessAction,
+  SaveTodoItemSuccessAction,
+  SaveTodoItemFailureAction,
+  SaveTodoItemAction,
 } from '../actions/todo-item.actions';
 import { TodoItem } from '../models/todo-item.model';
 
@@ -30,6 +33,18 @@ export class TodoEffects {
             catchError((error: Error) => of(new LoadTodoItemsFailureAction(error)))
           )
       )
+    );
+
+  @Effect() saveTodoItem$ = this.actions$
+  .pipe(
+    ofType<SaveTodoItemAction>(TodoActionTypes.SAVE_TODO_ITEM),
+    mergeMap(
+      (action: SaveTodoItemAction) => this.todoService.saveTodoItem(action.payload)
+        .pipe(
+          map((data: TodoItem) => new SaveTodoItemSuccessAction(data)),
+          catchError((error: Error) => of(new SaveTodoItemFailureAction(error)))
+        )
+    )
     );
 
   @Effect() updateTodoItem$ = this.actions$
