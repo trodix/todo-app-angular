@@ -1,6 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { TodoService } from '../todo.service';
 import { TodoItem } from '../store/models/todo-item.model';
+import { Store } from '@ngrx/store';
+import { AppState } from '../store/models/todo-item-state.model';
+import { UpdateTodoItemAction } from '../store/actions/todo-item.actions';
 
 @Component({
   selector: 'app-todo-item',
@@ -11,18 +14,20 @@ export class TodoItemComponent implements OnInit {
 
   @Input() todoItem: TodoItem = null;
 
-  constructor(private todoService: TodoService) { }
+  constructor(private store: Store<AppState>) { }
 
   ngOnInit(): void {
   }
 
   handleCompleteStatus(): void {
-    this.todoItem.done = !this.todoItem.done;
-    this.todoService.updateTodoItem(this.todoItem).subscribe((todoItem: TodoItem) => this.todoItem = todoItem);
+    const updatedItem: TodoItem = { ...this.todoItem };
+    updatedItem.done = !this.todoItem.done;
+
+    this.store.dispatch(new UpdateTodoItemAction(updatedItem));
   }
 
   handleRemoveItem(): void {
-    this.todoService.deleteTodoItem(this.todoItem).subscribe();
+    // this.todoService.deleteTodoItem(this.todoItem).subscribe();
   }
 
 }
