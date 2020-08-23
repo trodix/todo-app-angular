@@ -1,31 +1,29 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
-
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { TodoItemComponent } from './todo/todo-item/todo-item.component';
-import { TodoListComponent } from './todo/todo-list/todo-list.component';
-import { TodoService } from './todo/todo.service';
-import { StoreModule } from '@ngrx/store';
-import { TodoReducer } from './todo/store/reducers/todo-item.reducer';
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { StoreModule } from '@ngrx/store';
+import { TodoReducer } from './shared/components/todo/store/reducers/todo-item.reducer';
 import { EffectsModule } from '@ngrx/effects';
-import { TodoEffects } from './todo/store/effects/todo-item.effects';
+import { TodoEffects } from './shared/components/todo/store/effects/todo-item.effects';
+import { RouterModule } from '@angular/router';
+
+import { AuthModule } from './auth/auth.module';
+import { HomeModule } from './home/home.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    TodoItemComponent,
-    TodoListComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule,
+    AuthModule,
+    HomeModule,
 
     StoreModule.forRoot({
       todo: TodoReducer
@@ -34,12 +32,12 @@ import { TodoEffects } from './todo/store/effects/todo-item.effects';
       TodoEffects
     ]),
 
+    AppRoutingModule,
+
     // Keep it at the end
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
   ],
-  providers: [
-    TodoService
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
