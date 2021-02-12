@@ -8,7 +8,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class TodoService {
 
-  private TODO_URL = 'http://127.0.0.1:8000/v1/todos';
+  private TODO_URL = 'http://127.0.0.1:8000/api/todos';
 
   constructor(private http: HttpClient) { }
 

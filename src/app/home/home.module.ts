@@ -1,13 +1,19 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { SharedModule } from '../shared/shared.module';
 import { HomePageComponent } from './components/home-page/home-page.component';
-import { TodoModule } from '../shared/components/todo/todo.module';
+
+const homeRoutes: Routes = [
+  { path: '', component: HomePageComponent }
+];
 
 @NgModule({
   declarations: [HomePageComponent],
   imports: [
     CommonModule,
-    TodoModule
+    SharedModule,
+    RouterModule.forChild(homeRoutes),
   ]
 })
 export class HomeModule { }

@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { User } from '../../models/user';
+import * as AuthActions from '../../store/actions/auth.actions';
+import * as fromAuth from '../../store/reducers/auth.reducer';
 
 @Component({
   selector: 'app-login-page',
@@ -7,9 +11,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginPageComponent implements OnInit {
 
-  constructor() { }
+  public user: User = new User();
+
+  constructor(private store$: Store<fromAuth.State>) { }
 
   ngOnInit(): void {
+  }
+
+  onSubmit(): void {
+    this.store$.dispatch(AuthActions.Login({ user: this.user }));
   }
 
 }

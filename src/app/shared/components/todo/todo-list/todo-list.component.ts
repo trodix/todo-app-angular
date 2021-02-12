@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TodoItem } from '../store/models/todo-item.model';
 import { TodoService } from '../todo.service';
 import { Store } from '@ngrx/store';
-import { AppState } from '../store/models/todo-item-state.model';
+import { TodoState } from '../store/reducers/todo-item.reducer';
 import { Observable } from 'rxjs';
 import { LoadTodoItemsAction, SaveTodoItemAction } from '../store/actions/todo-item.actions';
 import { NgForm } from '@angular/forms';
@@ -23,12 +23,12 @@ export class TodoListComponent implements OnInit {
     done: false
   };
 
-  constructor(private store: Store<AppState>) { }
+  constructor(private store: Store<TodoState>) { }
 
   ngOnInit(): void {
-    this.todoItems$ = this.store.select(store => store.todo.list);
-    this.loading$ = this.store.select(store => store.todo.loading);
-    this.error$ = this.store.select(store => store.todo.error);
+    this.todoItems$ = this.store.select(todo => todo.list);
+    this.loading$ = this.store.select(todo => todo.loading);
+    this.error$ = this.store.select(todo => todo.error);
 
     this.store.dispatch(new LoadTodoItemsAction());
   }

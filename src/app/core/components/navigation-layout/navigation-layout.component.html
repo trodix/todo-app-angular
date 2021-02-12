@@ -1,0 +1,7 @@
+<div class="loading-container" *ngIf="routingLoading$ | async">
+  <p>Loading...</p>
+</div>
+<div class="page-container">
+  <button (click)="onLogout()">Logout</button>
+  <router-outlet></router-outlet>
+</div>

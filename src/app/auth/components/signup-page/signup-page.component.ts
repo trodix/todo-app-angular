@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from '../../models/user';
+import { RegisterCredentials } from '../../models/register-credentials';
 
 @Component({
   selector: 'app-signup-page',
@@ -8,7 +8,7 @@ import { User } from '../../models/user';
 })
 export class SignupPageComponent implements OnInit {
 
-  user: User = new User();
+  registerCredentials: RegisterCredentials = new RegisterCredentials();
 
   constructor() { }
 
@@ -16,7 +16,7 @@ export class SignupPageComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log(this.user);
+    console.log(this.registerCredentials);
   }
 
 }
