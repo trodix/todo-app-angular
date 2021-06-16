@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router, RouterEvent } from '@angular/router';
-import * as AuthActions from '../../../auth/store/actions/auth.actions';
+import * as AuthActions from '@app/auth/store/actions/auth.actions';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import * as fromAuth from '../../..//auth/store/reducers/auth.reducer';
+import * as fromAuth from '../../../auth/store/reducers/auth.reducer';
 
 @Component({
   selector: 'app-navigation-layout',

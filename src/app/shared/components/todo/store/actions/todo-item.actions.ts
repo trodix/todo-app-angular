@@ -1,4 +1,4 @@
-import { Action } from '@ngrx/store';
+import { createAction, props } from '@ngrx/store';
 import { TodoItem } from '../models/todo-item.model';
 
 export enum TodoActionTypes {
@@ -19,92 +19,61 @@ export enum TodoActionTypes {
   DELETE_TODO_ITEM_FAILURE = '[TODO ITEM] Delete Item failure',
 }
 
-export class LoadTodoItemsAction implements Action {
-  readonly type = TodoActionTypes.LOAD_TODO_ITEMS;
+export const LoadTodoItems = createAction(
+  TodoActionTypes.LOAD_TODO_ITEMS
+);
 
-  constructor() {}
-}
+export const LoadTodoItemsSuccess = createAction(
+  TodoActionTypes.LOAD_TODO_ITEMS_SUCCESS,
+  props<{ todoItems: TodoItem[] }>()
+);
 
-export class LoadTodoItemsSuccessAction implements Action {
-  readonly type = TodoActionTypes.LOAD_TODO_ITEMS_SUCCESS;
+export const LoadTodoItemsFailure = createAction(
+  TodoActionTypes.LOAD_TODO_ITEMS_FAILURE,
+  props<{ error: Error }>()
+);
 
-  constructor(public payload: TodoItem[]) {}
-}
+export const SaveTodoItem = createAction(
+  TodoActionTypes.SAVE_TODO_ITEM,
+  props<{ todoItem: TodoItem }>()
+);
 
-export class LoadTodoItemsFailureAction implements Action {
-  readonly type = TodoActionTypes.LOAD_TODO_ITEMS_FAILURE;
+export const SaveTodoItemSuccess = createAction(
+  TodoActionTypes.SAVE_TODO_ITEM_SUCCESS,
+  props<{ todoItem: TodoItem }>()
+);
 
-  constructor(public payload: Error) {}
-}
+export const SaveTodoItemFailure = createAction(
+  TodoActionTypes.SAVE_TODO_ITEM_FAILURE,
+  props<{ error: Error }>()
+);
 
-export class SaveTodoItemAction implements Action {
-  readonly type = TodoActionTypes.SAVE_TODO_ITEM;
-  todoItem: TodoItem;
+export const UpdateTodoItem = createAction(
+  TodoActionTypes.UPDATE_TODO_ITEM,
+  props<{ todoItem: TodoItem }>()
+);
 
-  constructor(public payload: TodoItem) {}
-}
+export const UpdateTodoItemSuccess = createAction(
+  TodoActionTypes.UPDATE_TODO_ITEM_SUCCESS,
+  props<{ todoItem: TodoItem }>()
+);
 
-export class SaveTodoItemSuccessAction implements Action {
-  readonly type = TodoActionTypes.SAVE_TODO_ITEM_SUCCESS;
+export const UpdateTodoItemFailure = createAction(
+  TodoActionTypes.UPDATE_TODO_ITEM_FAILURE,
+  props<{ error: Error }>()
+);
 
-  constructor(public payload: TodoItem) {}
-}
+export const DeleteTodoItem = createAction(
+  TodoActionTypes.DELETE_TODO_ITEM,
+  props<{ todoItem: TodoItem }>()
+);
 
-export class SaveTodoItemFailureAction implements Action {
-  readonly type = TodoActionTypes.SAVE_TODO_ITEM_FAILURE;
+export const DeleteTodoItemSuccess = createAction(
+  TodoActionTypes.DELETE_TODO_ITEM_SUCCESS,
+  props<{ todoItem: TodoItem }>()
+);
 
-  constructor(public payload: Error) {}
-}
-
-export class UpdateTodoItemAction implements Action {
-  readonly type = TodoActionTypes.UPDATE_TODO_ITEM;
-  todoItem: TodoItem;
-
-  constructor(public payload: TodoItem) {}
-}
-
-export class UpdateTodoItemSuccessAction implements Action {
-  readonly type = TodoActionTypes.UPDATE_TODO_ITEM_SUCCESS;
-
-  constructor(public payload: TodoItem) {}
-}
-
-export class UpdateTodoItemFailureAction implements Action {
-  readonly type = TodoActionTypes.UPDATE_TODO_ITEM_FAILURE;
-
-  constructor(public payload: Error) {}
-}
-
-export class DeleteTodoItemAction implements Action {
-  readonly type = TodoActionTypes.DELETE_TODO_ITEM;
-  todoItem: TodoItem;
-
-  constructor(public payload: TodoItem) {}
-}
-
-export class DeleteTodoItemSuccessAction implements Action {
-  readonly type = TodoActionTypes.DELETE_TODO_ITEM_SUCCESS;
-
-  constructor(public payload: TodoItem) {}
-}
-
-export class DeleteTodoItemFailureAction implements Action {
-  readonly type = TodoActionTypes.DELETE_TODO_ITEM_FAILURE;
-
-  constructor(public payload: Error) {}
-}
-
-export type TodoAction =
-  LoadTodoItemsAction
-  | LoadTodoItemsSuccessAction
-  | LoadTodoItemsFailureAction
-  | SaveTodoItemAction
-  | SaveTodoItemSuccessAction
-  | SaveTodoItemFailureAction
-  | UpdateTodoItemAction
-  | UpdateTodoItemSuccessAction
-  | UpdateTodoItemFailureAction
-  | DeleteTodoItemAction
-  | DeleteTodoItemSuccessAction
-  | DeleteTodoItemFailureAction
-;
+export const DeleteTodoItemFailure = createAction(
+  TodoActionTypes.DELETE_TODO_ITEM_FAILURE,
+  props<{ error: Error }>()
+);

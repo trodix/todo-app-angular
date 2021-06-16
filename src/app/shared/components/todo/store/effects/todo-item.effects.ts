@@ -1,75 +1,59 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 import { TodoService } from '../../todo.service';
-import {
-  LoadTodoItemsAction,
-  LoadTodoItemsFailureAction,
-  LoadTodoItemsSuccessAction,
-  TodoActionTypes,
-  UpdateTodoItemAction,
-  UpdateTodoItemFailureAction,
-  UpdateTodoItemSuccessAction,
-  DeleteTodoItemAction,
-  DeleteTodoItemFailureAction,
-  DeleteTodoItemSuccessAction,
-  SaveTodoItemSuccessAction,
-  SaveTodoItemFailureAction,
-  SaveTodoItemAction,
-} from '../actions/todo-item.actions';
+import * as TodoActions from '../actions/todo-item.actions';
 import { TodoItem } from '../models/todo-item.model';
 
 @Injectable()
 export class TodoEffects {
 
-  @Effect() loadTodoItems$ = this.actions$
-    .pipe(
-      ofType<LoadTodoItemsAction>(TodoActionTypes.LOAD_TODO_ITEMS),
-      mergeMap(
-        () => this.todoService.getTodoItems()
-          .pipe(
-            map((data: TodoItem[]) => new LoadTodoItemsSuccessAction(data)),
-            catchError((error: Error) => of(new LoadTodoItemsFailureAction(error)))
-          )
-      )
-    );
-
-  @Effect() saveTodoItem$ = this.actions$
-  .pipe(
-    ofType<SaveTodoItemAction>(TodoActionTypes.SAVE_TODO_ITEM),
+  loadTodoItems$ = createEffect(() => this.actions$.pipe(
+    ofType(TodoActions.LoadTodoItems),
     mergeMap(
-      (action: SaveTodoItemAction) => this.todoService.saveTodoItem(action.payload)
+      () => this.todoService.getTodoItems()
         .pipe(
-          map((data: TodoItem) => new SaveTodoItemSuccessAction(data)),
-          catchError((error: Error) => of(new SaveTodoItemFailureAction(error)))
+          map((data: TodoItem[]) => TodoActions.LoadTodoItemsSuccess({ todoItems: data })),
+          catchError((error: Error) => of(TodoActions.LoadTodoItemsFailure({ error })))
         )
     )
-    );
+  ));
 
-  @Effect() updateTodoItem$ = this.actions$
-    .pipe(
-      ofType<UpdateTodoItemAction>(TodoActionTypes.UPDATE_TODO_ITEM),
-      mergeMap(
-        (action: UpdateTodoItemAction) => this.todoService.updateTodoItem(action.payload)
-          .pipe(
-            map((data: TodoItem) => new UpdateTodoItemSuccessAction(data)),
-            catchError((error: Error) => of(new UpdateTodoItemFailureAction(error)))
-          )
-      )
-    );
-
-  @Effect() deleteTodoItem$ = this.actions$
-  .pipe(
-    ofType<DeleteTodoItemAction>(TodoActionTypes.DELETE_TODO_ITEM),
+  saveTodoItem$ = createEffect(() => this.actions$.pipe(
+    ofType(TodoActions.SaveTodoItem),
     mergeMap(
-      (action: DeleteTodoItemAction) => this.todoService.deleteTodoItem(action.payload)
+      ({ todoItem }) => this.todoService.saveTodoItem(todoItem)
         .pipe(
-          map(() => new DeleteTodoItemSuccessAction(action.payload)),
-          catchError((error: Error) => of(new DeleteTodoItemFailureAction(error)))
+          map((data: TodoItem) => TodoActions.SaveTodoItemSuccess({ todoItem: data })),
+          catchError((error: Error) => of(TodoActions.SaveTodoItemFailure({ error })))
         )
     )
-  );
+  ));
+
+  updateTodoItem$ = createEffect(() => this.actions$
+    .pipe(
+      ofType(TodoActions.UpdateTodoItem),
+      mergeMap(
+        ({ todoItem }) => this.todoService.updateTodoItem(todoItem)
+          .pipe(
+            map((data: TodoItem) => TodoActions.UpdateTodoItemSuccess({ todoItem: data })),
+            catchError((error: Error) => of(TodoActions.UpdateTodoItemFailure({ error })))
+          )
+      )
+    ));
+
+  deleteTodoItem$ = createEffect(() => this.actions$
+    .pipe(
+      ofType(TodoActions.DeleteTodoItem),
+      mergeMap(
+        ({ todoItem }) => this.todoService.deleteTodoItem(todoItem)
+          .pipe(
+            map(() => TodoActions.DeleteTodoItemSuccess({ todoItem })),
+            catchError((error: Error) => of(TodoActions.DeleteTodoItemFailure({ error })))
+          )
+      )
+    ));
 
   constructor(private actions$: Actions, private todoService: TodoService) { }
 

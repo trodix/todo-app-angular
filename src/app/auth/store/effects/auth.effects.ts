@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType, ROOT_EFFECTS_INIT } from '@ngrx/effects';
 import { of } from 'rxjs';
-import { catchError, exhaustMap, map, skip, skipUntil, skipWhile, switchMap, tap } from 'rxjs/operators';
+import { catchError, exhaustMap, map, switchMap, tap } from 'rxjs/operators';
 import { AuthService } from '../../auth.service';
 import { RefreshTokenRequest } from '../../models/refresh-token-request';
 import { User } from '../../models/user';
@@ -11,13 +11,6 @@ import * as AuthActions from '../actions/auth.actions';
 
 @Injectable()
 export class AuthEffects {
-
-  constructor(
-    private router: Router,
-    private actions$: Actions,
-    private authService: AuthService,
-    private storageService: StorageService
-  ) { }
 
   initializeStoredToken$ = createEffect(() => this.actions$.pipe(
     ofType(ROOT_EFFECTS_INIT),
@@ -98,4 +91,13 @@ export class AuthEffects {
       this.router.navigate(['auth/login']);
     }),
   ), { dispatch: false });
+
+
+  constructor(
+    private router: Router,
+    private actions$: Actions,
+    private authService: AuthService,
+    private storageService: StorageService
+  ) { }
+
 }

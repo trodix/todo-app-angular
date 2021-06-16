@@ -1,60 +1,37 @@
-import { TodoAction, TodoActionTypes } from '../actions/todo-item.actions';
+import { createReducer, on, Action } from '@ngrx/store';
+import * as TodoActions from '../../store/actions/todo-item.actions';
 import { TodoItem } from '../models/todo-item.model';
 
-export interface TodoState {
+export interface State {
   list: TodoItem[];
   loading: boolean;
   error: Error;
 }
 
-const initialState: TodoState = {
+const initialState: State = {
   list: [],
   loading: false,
   error: undefined
 };
 
-export function TodoReducer(state: TodoState = initialState, action: TodoAction): TodoState {
-  switch (action.type) {
-    case TodoActionTypes.LOAD_TODO_ITEMS:
-      return { ...state, loading: true };
+const todoReducer = createReducer(
+  initialState,
 
-    case TodoActionTypes.LOAD_TODO_ITEMS_SUCCESS:
-      return { ...state, list: action.payload, loading: false };
+  on(TodoActions.LoadTodoItemsSuccess, (state: State, { todoItems }) => ({ ...initialState, list: todoItems })),
+  on(TodoActions.LoadTodoItemsFailure, (state: State, { error }) => ({ ...initialState, error })),
+  on(TodoActions.SaveTodoItemSuccess, (state: State, { todoItem }) => ({ ...initialState, list: [...state.list, todoItem] })),
+  on(TodoActions.SaveTodoItemFailure, (state: State, { error }) => ({ ...initialState, error })),
+  on(TodoActions.UpdateTodoItemSuccess, (state: State, { todoItem }) => {
+    const itemStateIndex = state.list.map(i => i.id).indexOf(todoItem.id);
+    const updatedStateList = [...state.list];
+    updatedStateList[itemStateIndex] = todoItem;
+    return { ...initialState, list: updatedStateList };
+  }),
+  on(TodoActions.UpdateTodoItemFailure, (state: State, { error }) => ({ ...initialState, error })),
+  on(TodoActions.DeleteTodoItemSuccess, (state: State, { todoItem }) => ({ ...initialState, list: state.list.filter(i => i.id !== todoItem.id) })),
+  on(TodoActions.DeleteTodoItemFailure, (state: State, { error }) => ({ ...initialState, error })),
+);
 
-    case TodoActionTypes.LOAD_TODO_ITEMS_FAILURE:
-      return { ...state, loading: false, error: action.payload };
-
-    case TodoActionTypes.SAVE_TODO_ITEM:
-      return { ...state, loading: true };
-
-    case TodoActionTypes.SAVE_TODO_ITEM_SUCCESS:
-      return { ...state, list: [ ...state.list, action.payload ], loading: false };
-
-    case TodoActionTypes.SAVE_TODO_ITEM_FAILURE:
-      return { ...state, error: action.payload, loading: false };
-
-    case TodoActionTypes.UPDATE_TODO_ITEM:
-      return { ...state, loading: true };
-
-    case TodoActionTypes.UPDATE_TODO_ITEM_SUCCESS:
-      const itemStateIndex = state.list.map(i => i.id).indexOf(action.payload.id);
-      const updatedStateList = [ ...state.list ];
-      updatedStateList[itemStateIndex] = action.payload;
-      return { ...state, list: updatedStateList, loading: false };
-
-    case TodoActionTypes.UPDATE_TODO_ITEM_FAILURE:
-      return { ...state, loading: false, error: action.payload };
-
-    case TodoActionTypes.DELETE_TODO_ITEM:
-      return { ...state, loading: true };
-
-    case TodoActionTypes.DELETE_TODO_ITEM_SUCCESS:
-      return { ...state, list: state.list.filter(i => i.id !== action.payload.id), loading: false };
-
-    case TodoActionTypes.DELETE_TODO_ITEM_FAILURE:
-      return { ...state, loading: false, error: action.payload };
-
-    default:
-      return state;
-  }
+export function reducer(state: State | undefined, action: Action): State {
+  return todoReducer(state, action);
 }
