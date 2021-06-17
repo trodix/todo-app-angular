@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
-import { catchError, map, mergeMap } from 'rxjs/operators';
+import { catchError, map, mergeMap, tap } from 'rxjs/operators';
 import { TodoService } from '../../todo.service';
 import * as TodoActions from '../actions/todo-item.actions';
 import { TodoItem } from '../models/todo-item.model';
@@ -22,6 +22,7 @@ export class TodoEffects {
 
   saveTodoItem$ = createEffect(() => this.actions$.pipe(
     ofType(TodoActions.SaveTodoItem),
+    tap((i) => console.log("ok" + i)),
     mergeMap(
       ({ todoItem }) => this.todoService.saveTodoItem(todoItem)
         .pipe(

@@ -1,4 +1,5 @@
 import * as fromAuth from '../../auth/store/reducers/auth.reducer';
+import * as fromTodo from '../../shared/components/todo/store/reducers/todo-item.reducer';
 
 /**
  * Our state is composed of a map of action reducer functions.
@@ -15,11 +16,13 @@ import {InjectionToken} from '@angular/core';
  */
 export interface State {
   [fromAuth.authFeatureKey]: fromAuth.State;
+  [fromTodo.todoFeatureKey]: fromTodo.State;
   // router: fromRouter.RouterReducerState<any>;
 }
 
 export const reducers: ActionReducerMap<State> = {
   [fromAuth.authFeatureKey]: fromAuth.reducer,
+  [fromTodo.todoFeatureKey]: fromTodo.reducer,
 };
 
 

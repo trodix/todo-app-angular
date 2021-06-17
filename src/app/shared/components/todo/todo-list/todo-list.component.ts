@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { TodoItem } from '../store/models/todo-item.model';
-import { TodoService } from '../todo.service';
+import { FormBuilder, FormGroup, NgForm } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { TodoState } from '../store/reducers/todo-item.reducer';
 import { Observable } from 'rxjs';
-import { LoadTodoItemsAction, SaveTodoItemAction } from '../store/actions/todo-item.actions';
-import { NgForm } from '@angular/forms';
+import * as TodoItemActions from '../store/actions/todo-item.actions';
+import { TodoItem } from '../store/models/todo-item.model';
+import * as fromTodo from '../store/reducers/todo-item.reducer';
+import { selectTodoError, selectTodoList, selectTodoLoading } from '../store/selectors/todo-item.selectors';
 
 @Component({
   selector: 'app-todo-list',
@@ -18,25 +18,32 @@ export class TodoListComponent implements OnInit {
   loading$: Observable<boolean>;
   error$: Observable<Error>;
 
-  todoModel: TodoItem = {
-    title: '',
-    done: false
-  };
+  todoForm: FormGroup;
+  //  {
+  //   title: '',
+  //   done: false
+  // };
 
-  constructor(private store: Store<TodoState>) { }
+  constructor(private store$: Store<fromTodo.State>, private fb: FormBuilder) { }
 
   ngOnInit(): void {
-    this.todoItems$ = this.store.select(todo => todo.list);
-    this.loading$ = this.store.select(todo => todo.loading);
-    this.error$ = this.store.select(todo => todo.error);
+    this.todoItems$ = this.store$.select(selectTodoList);
+    this.loading$ = this.store$.select(selectTodoLoading);
+    this.error$ = this.store$.select(selectTodoError);
 
-    this.store.dispatch(new LoadTodoItemsAction());
+    this.store$.dispatch(TodoItemActions.LoadTodoItems());
+
+    this.todoForm = this.fb.group({
+      title: [''],
+      done: [false]
+    });
   }
 
-  handleAddTodoItem(form: NgForm): void {
-    if (form.valid) {
-      this.store.dispatch(new SaveTodoItemAction({ ...this.todoModel }));
-      form.resetForm();
+  handleAddTodoItem(): void {
+    if (this.todoForm.valid) {
+      console.log(this.todoForm.value);
+      this.store$.dispatch(TodoItemActions.SaveTodoItem({ todoItem: this.todoForm.value }));
+      this.todoForm.reset;
     }
   }
 

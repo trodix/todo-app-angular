@@ -1,9 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { TodoItem } from '../store/models/todo-item.model';
-import { Store } from '@ngrx/store';
-import { AppState } from '../store/models/todo-item-state.model';
-import { UpdateTodoItemAction, DeleteTodoItemAction } from '../store/actions/todo-item.actions';
 import { NgForm } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import * as TodoItemActions from '../store/actions/todo-item.actions';
+import { TodoItem } from '../store/models/todo-item.model';
+import * as fromTodo from '../store/reducers/todo-item.reducer';
 
 @Component({
   selector: 'app-todo-item',
@@ -20,7 +20,7 @@ export class TodoItemComponent implements OnInit {
     done: false
   };
 
-  constructor(private store: Store<AppState>) { }
+  constructor(private store$: Store<fromTodo.State>) { }
 
   ngOnInit(): void {
   }
@@ -29,11 +29,11 @@ export class TodoItemComponent implements OnInit {
     const updatedItem: TodoItem = { ...this.todoItem };
     updatedItem.done = !this.todoItem.done;
 
-    this.store.dispatch(new UpdateTodoItemAction(updatedItem));
+    this.store$.dispatch(TodoItemActions.UpdateTodoItem({ todoItem: updatedItem }));
   }
 
   handleRemoveItem(): void {
-    this.store.dispatch(new DeleteTodoItemAction(this.todoItem));
+    this.store$.dispatch(TodoItemActions.DeleteTodoItem({ todoItem: this.todoItem }));
   }
 
   handleEditItem(): void {
@@ -43,7 +43,7 @@ export class TodoItemComponent implements OnInit {
 
   handleSaveEditItem(form: NgForm): void {
     if (form.valid) {
-      this.store.dispatch(new UpdateTodoItemAction(this.todoModel));
+      this.store$.dispatch(TodoItemActions.UpdateTodoItem({ todoItem: this.todoModel }));
       this.editMode = false;
     }
   }

@@ -10,6 +10,7 @@ import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { ROOT_REDUCERS } from './store/reducers';
 import { AuthEffects } from './auth/store/effects/auth.effects';
+import { TodoEffects } from './shared/components/todo/store/effects/todo-item.effects';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { AuthEffects } from './auth/store/effects/auth.effects';
 
     StoreModule.forRoot(ROOT_REDUCERS),
     EffectsModule.forRoot([
-      AuthEffects
+      AuthEffects,
+      TodoEffects
     ]),
 
     // Keep it at the end

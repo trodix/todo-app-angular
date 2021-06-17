@@ -2,6 +2,7 @@ import { createReducer, on, Action } from '@ngrx/store';
 import * as TodoActions from '../../store/actions/todo-item.actions';
 import { TodoItem } from '../models/todo-item.model';
 
+export const todoFeatureKey = 'TodoFeature';
 export interface State {
   list: TodoItem[];
   loading: boolean;
