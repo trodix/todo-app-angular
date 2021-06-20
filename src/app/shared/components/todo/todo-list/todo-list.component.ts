@@ -19,10 +19,6 @@ export class TodoListComponent implements OnInit {
   error$: Observable<Error>;
 
   todoForm: FormGroup;
-  //  {
-  //   title: '',
-  //   done: false
-  // };
 
   constructor(private store$: Store<fromTodo.State>, private fb: FormBuilder) { }
 
@@ -41,9 +37,8 @@ export class TodoListComponent implements OnInit {
 
   handleAddTodoItem(): void {
     if (this.todoForm.valid) {
-      console.log(this.todoForm.value);
       this.store$.dispatch(TodoItemActions.SaveTodoItem({ todoItem: this.todoForm.value }));
-      this.todoForm.reset;
+      this.todoForm.reset();
     }
   }
 

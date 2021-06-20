@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { TodoModule } from './components/todo/todo.module';
 
 
@@ -10,7 +11,8 @@ import { TodoModule } from './components/todo/todo.module';
     TodoModule
   ],
   exports: [
-    TodoModule
+    TodoModule,
+    ReactiveFormsModule
   ]
 })
 export class SharedModule { }
